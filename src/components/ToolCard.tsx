@@ -6,10 +6,19 @@ interface ToolCardProps {
   icon: React.ReactNode;
   status?: 'ready' | 'beta' | 'experimental';
   isLocal?: boolean;
+  showLocalBadge?: boolean;
   onClick?: () => void;
 }
 
-export const ToolCard: React.FC<ToolCardProps> = ({ title, description, icon, status, isLocal, onClick }) => {
+export const ToolCard: React.FC<ToolCardProps> = ({
+  title,
+  description,
+  icon,
+  status,
+  isLocal,
+  showLocalBadge = true,
+  onClick
+}) => {
   return (
     <div 
       className={`
@@ -28,7 +37,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({ title, description, icon, st
         </div>
         
         <div className="flex flex-col items-end gap-1.5">
-          {isLocal && (
+          {isLocal && showLocalBadge && (
             <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50">
               Local
             </span>

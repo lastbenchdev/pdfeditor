@@ -8,7 +8,7 @@ export const Hero: React.FC = () => {
   const [typingSpeed, setTypingSpeed] = useState(150);
 
   const phrases = [
-    "Free & Open Source.",
+    "Ad Free & Open Source.",
     "Client-side & Privacy-oriented.",
     "100% In-Browser."
   ];

@@ -6,8 +6,8 @@ export const Header: React.FC = () => {
     const saved = localStorage.getItem('theme');
     if (saved === 'dark') return true;
     if (saved === 'light') return false;
-    // Default to light if nothing saved
-    return false;
+    // Fall back to system preference if nothing is saved.
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
   useEffect(() => {

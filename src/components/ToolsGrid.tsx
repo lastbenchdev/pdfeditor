@@ -7,9 +7,16 @@ interface ToolsGridProps {
   description?: string;
   tools: Tool[];
   id?: string;
+  showLocalBadge?: boolean;
 }
 
-export const ToolsGrid: React.FC<ToolsGridProps> = ({ title, description, tools, id }) => {
+export const ToolsGrid: React.FC<ToolsGridProps> = ({
+  title,
+  description,
+  tools,
+  id,
+  showLocalBadge = true
+}) => {
   return (
     <section id={id} className="py-20 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 transition-colors duration-500">
       <div className="max-w-7xl mx-auto px-6">
@@ -36,6 +43,7 @@ export const ToolsGrid: React.FC<ToolsGridProps> = ({ title, description, tools,
               icon={tool.icon}
               status={tool.status}
               isLocal={tool.isLocal}
+              showLocalBadge={showLocalBadge}
               onClick={() => {
                 // If it's a real tool with a route, navigate
                 if (tool.route) {

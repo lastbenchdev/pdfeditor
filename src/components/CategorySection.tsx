@@ -28,8 +28,13 @@ export const CategorySection: React.FC<CategorySectionProps> = ({ category, tool
               title={tool.name}
               description={tool.description}
               icon={tool.icon}
-              tags={tool.tags}
-              onClick={() => alert(`Navigating to ${tool.name}`)}
+              status={tool.status}
+              isLocal={tool.isLocal}
+              onClick={() => {
+                if (tool.route) {
+                  window.location.hash = `#${tool.route}`;
+                }
+              }}
             />
           ))}
         </div>

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Home } from './pages/Home';
 import { AllTools } from './pages/AllTools';
+import { ToolDetail } from './pages/ToolDetail';
 
 function App() {
   const [currentHash, setCurrentHash] = useState(window.location.hash);
@@ -21,6 +22,13 @@ function App() {
     if (currentHash === '#/tools') {
       return <AllTools />;
     }
+    
+    // Check for tool detail route: #/tools/:id
+    if (currentHash.startsWith('#/tools/')) {
+      const toolId = currentHash.replace('#/tools/', '');
+      return <ToolDetail toolId={toolId} />;
+    }
+
     // Default to Home page
     return <Home />;
   };
@@ -31,7 +39,6 @@ function App() {
       <main>
         {renderPage()}
       </main>
-      {/* Footer will go here */}
     </>
   );
 }

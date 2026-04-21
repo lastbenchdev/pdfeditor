@@ -3,6 +3,7 @@ import { Hero } from '../components/Hero';
 import { ToolsGrid } from '../components/ToolsGrid';
 import { topSixTools } from '../data/tools';
 import { PrivacyBanner } from '../components/PrivacyBanner';
+import { Footer } from '../components/Footer';
 
 export const Home: React.FC = () => {
   return (
@@ -13,7 +14,9 @@ export const Home: React.FC = () => {
         title="Popular Tools"
         description="The PDF operations everyone reaches for, all in one place."
         tools={topSixTools}
+        showLocalBadge={false}
       />
+      <Footer />
     </div>
   );
 };

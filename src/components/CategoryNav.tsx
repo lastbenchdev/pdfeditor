@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { categoriesData, type Category } from '../data/categories';
+import { categoriesData } from '../data/categories';
 import { 
   FileTextIcon, 
   MinimizeIcon, 
