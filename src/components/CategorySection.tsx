@@ -32,7 +32,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({ category, tool
               isLocal={tool.isLocal}
               onClick={() => {
                 if (tool.route) {
-                  window.location.hash = `#${tool.route}`;
+                  window.location.hash = `#/editor?tool=${tool.id}`;
                 }
               }}
             />

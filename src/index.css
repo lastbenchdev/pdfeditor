@@ -69,3 +69,161 @@
   @apply opacity-30;
 }
 
+/* ═══════════════════════════════════════════════════════
+   Editor-Active: Full-viewport lock (Adobe Acrobat style)
+   ═══════════════════════════════════════════════════════ */
+
+.editor-active {
+  height: 100vh;
+  height: 100dvh; /* mobile safe */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-active main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Editor root fills its parent completely */
+.editor-root {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The 3-column body row */
+.editor-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+}
+
+/* Left thumbnail sidebar */
+.editor-sidebar-left {
+  width: 220px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-right: 1px solid var(--color-border);
+}
+
+/* Center preview area */
+.editor-preview {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Right operation panel */
+.editor-sidebar-right {
+  width: 340px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-left: 1px solid var(--color-border);
+}
+
+/* Toolbar bar */
+.editor-toolbar {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Footer action bar */
+.editor-footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Scrollbar styling for editor panels */
+.editor-sidebar-left::-webkit-scrollbar,
+.editor-sidebar-right::-webkit-scrollbar {
+  width: 5px;
+}
+
+.editor-sidebar-left::-webkit-scrollbar-track,
+.editor-sidebar-right::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editor-sidebar-left::-webkit-scrollbar-thumb,
+.editor-sidebar-right::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.3);
+  border-radius: 10px;
+}
+
+.editor-sidebar-left::-webkit-scrollbar-thumb:hover,
+.editor-sidebar-right::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.5);
+}
+
+/* File picker modal */
+.filepicker-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.filepicker-modal-content {
+  width: 90%;
+  max-width: 720px;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 1.25rem;
+  padding: 2rem;
+  animation: slideUp 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive: hide sidebar on mobile */
+@media (max-width: 1023px) {
+  .editor-sidebar-left {
+    display: none;
+  }
+  .editor-sidebar-right {
+    width: 100%;
+    max-width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+  }
+  .editor-body {
+    flex-direction: column;
+  }
+  .editor-preview {
+    flex: 1;
+    min-height: 300px;
+  }
+  .editor-sidebar-right {
+    flex: 0 0 auto;
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+}

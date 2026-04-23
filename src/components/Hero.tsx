@@ -68,10 +68,12 @@ export const Hero: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
           <button 
             className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 bg-accent text-white font-extrabold rounded-full transition-all hover:bg-accent-hover hover:-translate-y-1 hover:shadow-xl active:translate-y-0"
-            onClick={() => alert('File picker coming soon!')}
+            onClick={() => {
+              window.location.hash = '#/editor';
+            }}
           >
             <FileUpIcon className="w-6 h-6 transition-transform group-hover:scale-110" />
-            Select PDF file
+            Open Editor
           </button>
           <a 
             href="#/tools" 

@@ -1,4 +1,5 @@
 import { PDFDocument, degrees } from 'pdf-lib';
+import { normalizePageSelection } from './page-selection';
 
 export interface PDFOperationResult {
   blob: Blob;
@@ -21,6 +22,11 @@ interface RotateConfig {
 interface PageRange {
   start: number;
   end: number;
+}
+
+interface PDFFilePayload {
+  arrayBuffer: ArrayBuffer;
+  fileName: string;
 }
 
 function toPdfBlob(bytes: Uint8Array): Blob {
@@ -77,27 +83,6 @@ function parseRangeExpression(expression: string, pageCount: number): PageRange[
   return ranges;
 }
 
-function normalizePageSelection(pages: number[], pageCount: number): number[] {
-  if (!Array.isArray(pages) || pages.length === 0) {
-    throw new Error('Select at least one page.');
-  }
-
-  const unique: number[] = [];
-  const seen = new Set<number>();
-
-  for (const page of pages) {
-    if (!Number.isInteger(page) || page < 1 || page > pageCount) {
-      throw new Error(`Page ${page} is out of bounds for a ${pageCount}-page PDF.`);
-    }
-    if (!seen.has(page)) {
-      seen.add(page);
-      unique.push(page);
-    }
-  }
-
-  return unique;
-}
-
 function buildPageResultName(fileName: string, prefix: string): string {
   return `${prefix}_${fileName}`;
 }
@@ -105,12 +90,11 @@ function buildPageResultName(fileName: string, prefix: string): string {
 /**
  * Merges multiple PDF files into one.
  */
-export async function mergePDFs(files: File[]): Promise<PDFOperationResult> {
+export async function mergePDFs(files: PDFFilePayload[]): Promise<PDFOperationResult> {
   const mergedPdf = await PDFDocument.create();
   
   for (const file of files) {
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await PDFDocument.load(arrayBuffer);
+    const pdf = await PDFDocument.load(file.arrayBuffer);
     const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
     copiedPages.forEach((page) => mergedPdf.addPage(page));
   }

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Home } from './pages/Home';
 import { AllTools } from './pages/AllTools';
-import { ToolDetail } from './pages/ToolDetail';
+import { Editor } from './pages/Editor';
 
 function App() {
   const [currentHash, setCurrentHash] = useState(window.location.hash);
@@ -10,23 +10,34 @@ function App() {
   useEffect(() => {
     const handleHashChange = () => {
       setCurrentHash(window.location.hash);
-      window.scrollTo(0, 0); // Scroll to top on navigation
+
+      // Only scroll to top on non-editor routes
+      if (!window.location.hash.startsWith('#/editor')) {
+        window.scrollTo(0, 0);
+      }
     };
 
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  const isEditorRoute = currentHash.startsWith('#/editor') || currentHash.startsWith('#/tools/');
+
   // Determine what page to render based on hash
   const renderPage = () => {
     if (currentHash === '#/tools') {
       return <AllTools />;
     }
+
+    if (currentHash.startsWith('#/editor')) {
+      return <Editor routeHash={currentHash} />;
+    }
     
-    // Check for tool detail route: #/tools/:id
+    // Backward compatibility: redirect old tool URLs into editor context.
     if (currentHash.startsWith('#/tools/')) {
       const toolId = currentHash.replace('#/tools/', '');
-      return <ToolDetail toolId={toolId} />;
+      window.location.hash = `#/editor?tool=${toolId}`;
+      return <Editor routeHash={`#/editor?tool=${toolId}`} />;
     }
 
     // Default to Home page
@@ -34,12 +45,12 @@ function App() {
   };
 
   return (
-    <>
+    <div className={isEditorRoute ? 'editor-active' : ''}>
       <Header />
       <main>
         {renderPage()}
       </main>
-    </>
+    </div>
   );
 }
 

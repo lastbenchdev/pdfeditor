@@ -47,7 +47,7 @@ export const ToolsGrid: React.FC<ToolsGridProps> = ({
               onClick={() => {
                 // If it's a real tool with a route, navigate
                 if (tool.route) {
-                  window.location.hash = `#${tool.route}`;
+                  window.location.hash = `#/editor?tool=${tool.id}`;
                 }
               }}
             />
