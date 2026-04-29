@@ -1,0 +1,256 @@
+<div class="gallery-wrap">
+
+  <!-- ═══════════════════════ LOADING SKELETON ═══════════════════════ -->
+  @if (isLoading) {
+    <div class="skeleton-grid">
+      @for (s of skeletonItems; track s) {
+        <div class="skeleton-card">
+          <div class="skeleton-thumb"></div>
+          <div class="skeleton-footer"></div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ═══════════════════════ MAIN GALLERY ══════════════════════════ -->
+  @if (!isLoading && pages.length > 0) {
+    <!-- Toolbar -->
+    <div class="gallery-toolbar">
+      <div class="toolbar-left">
+        <span class="toolbar-label">Pages</span>
+        <span class="toolbar-count">{{ pages.length }}</span>
+        <!-- Remove mode info -->
+        @if (mode === 'remove' && deletedCount > 0) {
+          <span class="toolbar-count" style="color:#ef4444;border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.06)">
+            {{ deletedCount }} marked for removal
+          </span>
+        }
+        <!-- Extract mode info -->
+        @if (mode === 'extract' && selectedCount > 0) {
+          <span class="toolbar-count" style="color:var(--color-primary);border-color:rgba(99,102,241,.25);background:rgba(99,102,241,.06)">
+            {{ selectedCount }} selected
+          </span>
+        }
+        <!-- Split mode info -->
+        @if (mode === 'split' && splitPoints.size > 0) {
+          <span class="toolbar-count" style="color:var(--color-primary);border-color:rgba(99,102,241,.25);background:rgba(99,102,241,.06)">
+            {{ splitPoints.size + 1 }} parts
+          </span>
+        }
+      </div>
+      <div class="toolbar-right">
+        <!-- Remove mode buttons -->
+        @if (mode === 'remove') {
+          <button class="tb-btn danger" (click)="deleteAll()" type="button">
+            <svg class="tb-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            Delete All
+          </button>
+          @if (deletedCount > 0) {
+            <button class="tb-btn success" (click)="restoreAll()" type="button">
+              <svg class="tb-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" />
+              </svg>
+              Restore All
+            </button>
+          }
+        }
+        <!-- Extract mode buttons -->
+        @if (mode === 'extract') {
+          <button class="tb-btn" (click)="selectAll()" type="button">
+            <svg class="tb-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+            Select All
+          </button>
+          @if (selectedCount > 0) {
+            <button class="tb-btn" (click)="deselectAll()" type="button">
+              <svg class="tb-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              </svg>
+              Deselect All
+            </button>
+          }
+        }
+        <!-- Rotate mode buttons -->
+        @if (mode === 'rotate') {
+          <button class="tb-btn" (click)="rotateAll(-90)" type="button">
+            <svg class="tb-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+            </svg>
+            Rotate All ↺
+          </button>
+          <button class="tb-btn" (click)="rotateAll(90)" type="button">
+            <svg class="tb-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" />
+            </svg>
+            Rotate All ↻
+          </button>
+          <button class="tb-btn danger" (click)="resetAllRotations()" type="button">
+            <svg class="tb-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+            Reset All
+          </button>
+        }
+        <!-- Split mode hint -->
+        @if (mode === 'split') {
+          <span class="toolbar-label" style="font-size:0.75rem">Click ✂ between pages to set split points</span>
+        }
+      </div>
+    </div>
+    <!-- Page Grid -->
+    <div class="page-grid">
+      @for (page of pages; track page; let i = $index) {
+        <!-- Page Card -->
+        <div
+          class="page-card"
+          [class.selectable]="mode === 'extract' || mode === 'remove'"
+          [class.selected]="mode === 'extract' && page.selected"
+          [class.deleted]="page.deleted"
+          [class.draggable]="mode === 'organize'"
+          [class.dragging]="dragSourceIndex === i"
+          [class.drag-over-target]="dragOverIndex === i && dragSourceIndex !== i"
+          [attr.draggable]="mode === 'organize' ? 'true' : null"
+          (dragstart)="mode === 'organize' && onDragStart($event, i)"
+          (dragover)="mode === 'organize' && onDragOver($event, i)"
+          (dragleave)="mode === 'organize' && onDragLeave()"
+          (drop)="mode === 'organize' && onDrop($event, i)"
+          (dragend)="mode === 'organize' && onDragEnd()"
+          (click)="onCardClick(page)"
+          >
+          <!-- Thumbnail wrapper -->
+          <div class="thumb-wrap">
+            <img
+              [class]="'thumb-img ' + getRotationClass(page.rotation)"
+              [src]="page.thumbnail"
+              [alt]="'Page ' + page.displayNumber"
+              draggable="false"
+              />
+            <!-- Deleted overlay -->
+            @if (page.deleted) {
+              <div class="deleted-overlay">
+                <span class="deleted-x">✕</span>
+              </div>
+            }
+            <!-- Selected overlay -->
+            @if (mode === 'extract' && page.selected) {
+              <div class="selected-overlay">
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+            }
+            <!-- Rotation badge -->
+            @if (mode === 'rotate' && page.rotation !== 0) {
+              <div class="rotation-badge">
+                {{ page.rotation }}°
+              </div>
+            }
+            <!-- Drag handle (organize mode) -->
+            @if (mode === 'organize') {
+              <div class="drag-handle">
+                <svg class="drag-handle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/>
+                </svg>
+              </div>
+            }
+          </div>
+          <!-- Card Footer -->
+          <div class="card-footer">
+            <span class="page-num">Page {{ page.displayNumber }}</span>
+            <div class="card-actions">
+              <!-- Remove mode: delete / restore button -->
+              @if (mode === 'remove') {
+                <button
+                  class="card-btn"
+                  [class.restore]="page.deleted"
+                  [class.danger]="!page.deleted"
+                  (click)="$event.stopPropagation(); toggleDelete(page)"
+                  [title]="page.deleted ? 'Restore page' : 'Delete page'"
+                  type="button"
+                  >
+                  @if (page.deleted) {
+                    <svg class="card-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+                    </svg>
+                  }
+                  @if (!page.deleted) {
+                    <svg class="card-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  }
+                </button>
+              }
+              <!-- Rotate mode: CCW, CW, reset buttons -->
+              @if (mode === 'rotate') {
+                <button class="card-btn" title="Rotate counter-clockwise" (click)="$event.stopPropagation(); rotatePage(page, -90)" type="button">
+                  <svg class="card-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+                  </svg>
+                </button>
+                <button class="card-btn" title="Rotate clockwise" (click)="$event.stopPropagation(); rotatePage(page, 90)" type="button">
+                  <svg class="card-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" />
+                  </svg>
+                </button>
+                @if (page.rotation !== 0) {
+                  <button class="card-btn danger" title="Reset rotation" (click)="$event.stopPropagation(); resetRotation(page)" type="button">
+                    <svg class="card-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                  </button>
+                }
+              }
+              <!-- Extract mode: checkbox -->
+              @if (mode === 'extract') {
+                <button
+                  class="card-btn"
+                  [class.restore]="page.selected"
+                  (click)="$event.stopPropagation(); toggleSelect(page)"
+                  [title]="page.selected ? 'Deselect' : 'Select'"
+                  type="button"
+                  >
+                  @if (page.selected) {
+                    <svg class="card-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                    </svg>
+                  }
+                  @if (!page.selected) {
+                    <svg class="card-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    </svg>
+                  }
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+        <!-- Split marker (between cards, for split mode) -->
+        @if (mode === 'split' && i < pages.length - 1) {
+          <div
+            class="split-marker-wrap"
+            [class.active]="isSplitPoint(page.pageIndex)"
+            (click)="toggleSplitPoint(page.pageIndex)"
+            title="Click to add/remove split point"
+            >
+            <div class="split-line"></div>
+            <div class="split-btn">✂</div>
+            <div class="split-line"></div>
+          </div>
+        }
+      }
+    </div>
+  }
+
+  <!-- ═══════════════════════ EMPTY STATE ═══════════════════════════ -->
+  @if (!isLoading && pages.length === 0) {
+    <div class="gallery-empty">
+      Upload a PDF to see pages here.
+    </div>
+  }
+
+</div>

@@ -1,0 +1,39 @@
+<app-tool-page
+  title="PDF to Image"
+  description="Convert your PDF pages to high-quality JPG or PNG images. All processing is done locally in your browser."
+  icon="image"
+  iconBg="rgba(99, 102, 241, 0.1)"
+  iconColor="#6366f1"
+  acceptedTypes=".pdf"
+  [allowMultiple]="false"
+  [uploadHint]="'One PDF file at a time'"
+  actionLabel="Convert PDF"
+  actionIcon="image"
+  [isProcessing]="isProcessing"
+  [errorMessage]="errorMessage"
+  [selectedFiles]="files"
+  [downloadFiles]="downloads"
+  (filesChanged)="onFilesChanged($event)"
+  (process)="onProcess()"
+>
+  <div slot="settings" class="flex flex-col gap-4">
+    <div class="flex flex-wrap gap-6">
+      <div class="flex flex-col gap-2 flex-1 min-w-[140px]">
+        <label class="text-sm font-bold text-slate-900 dark:text-white">Format</label>
+        <select class="px-3 py-2 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-sans text-sm focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors" [(ngModel)]="format">
+          <option value="jpeg">JPG</option>
+          <option value="png">PNG</option>
+        </select>
+      </div>
+      <div class="flex flex-col gap-2 flex-1 min-w-[140px]">
+        <label class="text-sm font-bold text-slate-900 dark:text-white">Quality / Scale</label>
+        <select class="px-3 py-2 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-sans text-sm focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors" [(ngModel)]="scale">
+          <option value="1">Standard (1x)</option>
+          <option value="2">High (2x)</option>
+          <option value="3">Ultra (3x)</option>
+        </select>
+      </div>
+    </div>
+    <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Each page of the PDF will be exported as a separate image file.</p>
+  </div>
+</app-tool-page>

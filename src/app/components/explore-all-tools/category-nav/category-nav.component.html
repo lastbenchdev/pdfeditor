@@ -1,0 +1,21 @@
+<div class="w-full border-b border-main bg-opacity-85 backdrop-blur-sm sticky top-16 z-30 mb-8" style="background-color: var(--glass-bg); border-color: var(--border-main);">
+  <div
+    #scrollContainer
+    class="w-full flex items-center justify-center gap-2 overflow-x-auto no-scrollbar py-4 px-6"
+    >
+    @for (cat of categories; track cat) {
+      <button
+        (click)="onSelectCategory(cat.id)"
+        [attr.data-active]="selectedCategoryId === cat.id"
+        class="flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all duration-300 font-bold text-sm border-2"
+      [ngClass]="selectedCategoryId === cat.id 
+        ? 'bg-gradient-to-r from-indigo-600 to-violet-600 border-indigo-600 text-white shadow-md shadow-indigo-500/20 scale-105' 
+        : 'bg-card border-main text-muted hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400'"
+        [style]="selectedCategoryId !== cat.id ? 'background-color: var(--bg-card); border-color: var(--border-main); color: var(--text-muted);' : ''"
+        >
+        <svg [attr.class]="'w-4 h-4 ' + (selectedCategoryId === cat.id ? 'text-white' : 'text-current')" [attr.viewBox]="getIconData(getIcon(cat.icon)).viewBox" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [innerHTML]="getIconData(getIcon(cat.icon)).path | safeHtml"></svg>
+        {{ cat.name }}
+      </button>
+    }
+  </div>
+</div>

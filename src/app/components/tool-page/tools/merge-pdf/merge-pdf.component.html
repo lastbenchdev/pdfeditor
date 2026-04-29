@@ -1,0 +1,27 @@
+<app-tool-page
+  title="Merge PDF"
+  description="Combine multiple PDFs into one unified document instantly."
+  icon="layers"
+  iconBg="rgba(99, 102, 241, 0.1)"
+  iconColor="#6366f1"
+  acceptedTypes=".pdf"
+  [allowMultiple]="true"
+  actionLabel="Merge PDFs"
+  actionIcon="layers"
+  [isProcessing]="isProcessing"
+  [errorMessage]="errorMessage"
+  [selectedFiles]="files"
+  [downloadFiles]="downloads"
+  (filesChanged)="onFilesChanged($event)"
+  (process)="onProcess()"
+>
+  <div slot="settings" class="space-y-4 p-6 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-bold text-slate-900 dark:text-white">Output File Name (Optional)</label>
+      <input type="text" [(ngModel)]="customFileName" placeholder="merged-document.pdf" class="px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-sans text-base focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors max-w-sm" />
+    </div>
+    <p class="text-sm text-slate-600 dark:text-slate-400 mt-4 font-medium">
+      Ensure files are in the order you want them merged. Use the ▲ and ▼ buttons on the files above to reorder them before merging.
+    </p>
+  </div>
+</app-tool-page>

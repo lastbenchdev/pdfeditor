@@ -1,0 +1,59 @@
+<app-tool-page
+  title="Image to PDF"
+  description="Convert JPG, PNG, WEBP and other images to PDF. Reorder images with the ▲▼ buttons."
+  icon="image"
+  iconBg="rgba(16, 185, 129, 0.1)"
+  iconColor="#10b981"
+  acceptedTypes=".jpg,.jpeg,.png,.webp,.bmp,.gif"
+  [allowMultiple]="true"
+  uploadHint="JPG, PNG, WEBP, BMP, GIF files supported"
+  actionLabel="Convert to PDF"
+  actionIcon="settings"
+  [isProcessing]="isProcessing"
+  [errorMessage]="errorMessage"
+  [selectedFiles]="files"
+  [downloadFiles]="downloads"
+  (filesChanged)="onFilesChanged($event)"
+  (process)="onProcess()"
+>
+  <div slot="settings" class="flex flex-col gap-4">
+    <div class="flex flex-wrap gap-6">
+      <div class="flex flex-col gap-2 flex-1 min-w-[140px]">
+        <label class="text-sm font-bold text-slate-900 dark:text-white"
+          >Page Size</label
+        >
+        <select
+          class="px-3 py-2 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-sans text-sm focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
+          [(ngModel)]="pageSize"
+        >
+          <option value="fit">Fit to Image</option>
+          <option value="A4">A4</option>
+          <option value="Letter">US Letter</option>
+        </select>
+      </div>
+      <div class="flex flex-col gap-2 flex-1 min-w-[140px]">
+        <label class="text-sm font-bold text-slate-900 dark:text-white"
+          >Margin (px)</label
+        >
+        <input
+          type="number"
+          class="px-3 py-2 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-sans text-sm focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors max-w-[100px]"
+          [(ngModel)]="margin"
+          min="0"
+          max="100"
+        />
+      </div>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-bold text-slate-900 dark:text-white"
+        >Output File Name (Optional)</label
+      >
+      <input
+        type="text"
+        [(ngModel)]="customFileName"
+        placeholder="images.pdf"
+        class="px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-sans text-base focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
+      />
+    </div>
+  </div>
+</app-tool-page>

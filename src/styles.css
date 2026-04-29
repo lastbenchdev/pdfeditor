@@ -1,0 +1,290 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tailwind CSS v3 - Standard setup with custom utilities */
+
+/* ============================================================
+ *  PDF Toolkit — Global Design System
+ *  Using Tailwind CSS v3 with custom CSS variables
+ * ============================================================ */
+
+/* ============================================================
+ *  CSS Custom Properties (theme-aware, toggled via .dark class)
+ * ============================================================ */
+:root {
+  /* Light Mode — cool blue-tinted whites & deep navy text */
+  --bg-main: #f0f4ff;
+  --bg-surface: #e6eaf8;
+  --bg-card: #ffffff;
+  --text-main: #0d1b3e;
+  --text-muted: #4a6080;
+  --border-main: #c5d0e8;
+  --glass-bg: rgba(240, 244, 255, 0.85);
+  --glass-border: rgba(197, 208, 232, 0.5);
+  --shadow-card: 0 2px 20px rgba(79, 70, 229, 0.07);
+  --color-primary: #4f46e5;
+  --color-primary-hover: #3730a3;
+  --color-accent: #7c3aed;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --color-brand-primary: #4f46e5;
+  --color-brand-accent: #7c3aed;
+  --color-brand-glow: #818cf8;
+}
+
+.dark {
+  /* Dark Mode — deep navy-black with blue-purple glow */
+  --bg-main: #07090f;
+  --bg-surface: #0d1220;
+  --bg-card: #111827;
+  --text-main: #eef2ff;
+  --text-muted: #8899bb;
+  --border-main: #1e2d4d;
+  --glass-bg: rgba(13, 18, 32, 0.88);
+  --glass-border: rgba(30, 45, 77, 0.6);
+  --shadow-card: 0 2px 20px rgba(79, 70, 229, 0.12);
+  --color-primary: #818cf8;
+  --color-primary-hover: #6366f1;
+  --color-accent: #a78bfa;
+}
+
+/* ============================================================
+ *  Base Reset & Body
+ * ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+ *  Utility Classes
+ * ============================================================ */
+
+/* Glassmorphism */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Gradient text utility */
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-accent)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================================
+ *  Animations
+ * ============================================================ */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease forwards;
+}
+
+/* ============================================================
+ *  Scrollbar
+ * ============================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-main);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* ============================================================
+ *  Base Reset & Body
+ * ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+ *  Utility Classes (only what Tailwind v4 can't auto-generate)
+ * ============================================================ */
+
+/* Glassmorphism */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Gradient text utility */
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-accent)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Hide scrollbar (for category nav) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================================
+ *  Animations
+ * ============================================================ */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease forwards;
+}
+
+/* ============================================================
+ *  Scrollbar (global, subtle) — only visible when not hidden
+ * ============================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-main);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}

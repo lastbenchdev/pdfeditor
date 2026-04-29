@@ -1,0 +1,62 @@
+/* All Tools Pages Component Styles */
+
+:host {
+  display: block;
+}
+
+.page-title {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+  letter-spacing: -0.04em;
+}
+@media (max-width: 768px) { .page-title { font-size: 2.25rem; } }
+.page-description {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  max-width: 48rem;
+  margin: 0 auto;
+  font-weight: 500;
+}
+.search-container {
+  max-width: 80rem;
+  margin: 0 auto 2rem;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+.categories-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.no-results {
+  text-align: center;
+  padding: 5rem 0;
+}
+.no-results-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-color: var(--bg-surface);
+  margin-bottom: 1.5rem;
+}
+.no-results-text {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+.reset-btn {
+  color: var(--color-primary);
+  font-weight: 700;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.reset-btn:hover { color: var(--color-primary-hover); }
