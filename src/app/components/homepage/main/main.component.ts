@@ -14,7 +14,7 @@ export class MainComponent implements OnInit, OnDestroy {
   private phrases = [
     "Free & Open Source.",
     "No Signup Required.",
-    "100% In-Browser."
+    "In-Browser."
   ];
   private phraseIndex = 0;
   private isDeleting = false;

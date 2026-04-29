@@ -108,7 +108,7 @@ import { RouterModule } from '@angular/router';
                   AGPL-3.0
                 </a>
               </p>
-              <p class="text-xs text-muted opacity-70">100% private • Browser-based • Open source</p>
+              <p class="text-xs text-muted opacity-70">• Browser-based • Open source</p>
             </div>
           </div>
         </div>

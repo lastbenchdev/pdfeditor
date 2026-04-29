@@ -23,9 +23,12 @@
     <!-- Title -->
     <h1 class="text-5xl md:text-6xl font-black -tracking-wider leading-tight mb-6 text-main">
       All-in-one PDF tools. <br />
-      <span
-        class="bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-400 dark:from-indigo-400 dark:via-violet-400 dark:to-indigo-300 bg-clip-text text-transparent inline-block min-h-[1.3em]">
-        {{ displayText }}
+      <span class="inline-grid grid-cols-1 justify-items-center mt-2">
+        <span class="col-start-1 row-start-1 invisible pointer-events-none h-0">Free & Open Source.</span>
+        <span
+          class="col-start-1 row-start-1 bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-400 dark:from-indigo-400 dark:via-violet-400 dark:to-indigo-300 bg-clip-text text-transparent min-h-[1.3em]">
+          {{ displayText }}<span class="text-indigo-600 dark:text-indigo-400 ml-0.5 animate-pulse">|</span>
+        </span>
       </span>
     </h1>
 
